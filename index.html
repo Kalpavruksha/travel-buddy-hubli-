@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TravelBuddy — Hubli</title>
+
+  <!-- Your main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Small inline styles to guarantee layering of video & UI -->
+  <style>
+    /* Ensure the video is full-screen and always behind UI */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+    /* dark overlay to keep text readable */
+    #videoOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+    /* wrapper for everything on top of the video */
+    #appWrapper {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* quick responsive tweaks so hero area doesn't block everything */
+    header.hero-sub {
+      padding: 18px 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    header.hero-sub .logo {
+      color: white;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    header.hero-sub .controls { display:flex; gap:10px; align-items:center; }
+    header.hero-sub .controls button {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: #ffffffd9;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* make sure pages stack correctly */
+    .page { position: relative; z-index: 10; }
+    
+    /* Handle missing images */
+    .card-no-image {
+      width: 100%;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0f0;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- === Background video (must exist at this path) === -->
+  <video id="bgVideo" autoplay muted loop playsinline>
+    <source src="assets/videos/bg.mp4" type="video/mp4" />
+    <!-- Optional fallback text -->
+    Your browser does not support HTML5 video.
+  </video>
+  <div id="videoOverlay"></div>
+
+  <!-- === App wrapper (UI above video) === -->
+  <div id="appWrapper">
+
+    <!-- Top small header (logo + quick nav) -->
+    <header class="hero-sub">
+      <div class="logo">TravelBuddy — Hubli</div>
+
+      <div class="controls" role="navigation" aria-label="Main navigation">
+        <button type="button" onclick="showPage('homePage')">Home</button>
+        <button type="button" onclick="showPage('categoriesPage')">Categories</button>
+        <button type="button" onclick="showPage('mapPage')">Map</button>
+        <button type="button" onclick="showPage('view3dPage')">3D View</button>
+        <button type="button" onclick="showPage('itineraryPage')">Itinerary</button>
+        <button type="button" onclick="showPage('chatPage')">AI Chat</button>
+      </div>
+
+      <input id="searchBox" type="search" placeholder="Search places, food, temples..." style="padding:8px 12px; border-radius:8px; border:none; min-width:220px;" />
+    </header>
+
+    <!-- ========== HOME / OVERVIEW PAGE ========== -->
+    <main id="homePage" class="page">
+      <section style="padding:18px;">
+        <h1 style="color:white; text-align:center; margin-bottom:12px;">Explore Hubli — TravelBuddy</h1>
+        <p style="color:#e9eef7; text-align:center; margin:0 0 18px 0;">AI-powered local guide, maps, itineraries & more.</p>
+      </section>
+
+      <section style="background:transparent; padding:0 18px 40px 18px;">
+        <h2 class="section-title" style="color:#0b2340;">Places overview</h2>
+        <div id="overviewGrid" class="grid"></div>
+      </section>
+    </main>
+
+    <!-- ========== CATEGORIES PAGE ========== -->
+    <section id="categoriesPage" class="page hidden">
+      <div style="padding:18px;">
+        <h2 class="section-title">Browse by category</h2>
+        <div id="filterTabs" class="tabs" style="margin:12px 0;"></div>
+        <div id="overviewGridCategories" class="grid"></div>
+      </div>
+    </section>
+
+    <!-- ========== MAP PAGE ========== -->
+    <section id="mapPage" class="page hidden">
+      <div style="padding:18px;">
+        <h2 class="section-title">Hubli Map</h2>
+        <div id="mapPageMap" class="map-box" style="width:90%; height:520px; margin:18px auto; border-radius:12px; overflow:hidden;">
+          <p>Loading map... If this takes too long, please check your Google Maps API key.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ITINERARY PAGE ========== -->
+    <section id="itineraryPage" class="page hidden">
+      <div style="padding:18px;">
+        <h2 class="section-title">AI Trip Planner</h2>
+
+        <div style="display:flex; gap:12px; align-items:center; margin:12px 0;">
+          <label style="color:#0b2340; font-weight:600;">Days:</label>
+          <select id="daysSelect" style="padding:8px 10px; border-radius:8px;">
+            <option value="2">2 Days</option>
+            <option value="3">3 Days</option>
+            <option value="4">4 Days</option>
+          </select>
+
+          <button id="generatePlanBtn" style="padding:10px 14px; border-radius:8px; background:#007bff; color:white; border:none; cursor:pointer;">Generate Itinerary</button>
+        </div>
+
+        <div id="itineraryOutput" class="itinerary-box" style="margin-top:12px;">
+          <p>Select number of days and click "Generate Itinerary" to create your travel plan.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 3D VIEW PAGE ========== -->
+    <section id="view3dPage" class="page hidden">
+      <div style="padding:18px;">
+        <h2 class="section-title">3D Virtual Tour - AGM College of Engineering & Technology</h2>
+        <div id="view3dContainer" class="view3d-box" style="width:90%; height:520px; margin:18px auto; border-radius:12px; overflow:hidden;">
+          <p>Loading 3D view... If this takes too long, please check your internet connection.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CHATPAGE ========== -->
+    <section id="chatPage" class="page hidden" style="padding:18px;">
+      <h2 class="section-title">AI Chat — TravelBuddy</h2>
+
+      <div id="chatbox" class="chat-box" style="background:white; margin:14px auto; max-width:1000px; height:420px; border-radius:12px; overflow:auto; padding:12px;">
+        <div class="bot">
+          <p>Hello! I'm TravelBuddy, your AI travel assistant for Hubli. Ask me about places to visit, local food, transportation, or get a personalized itinerary!</p>
+        </div>
+      </div>
+
+      <div class="chat-input" style="max-width:1000px; margin:8px auto; display:flex; gap:8px;">
+        <input id="userInput" type="text" placeholder="Ask about places, food, transport..." style="flex:1; padding:12px; border-radius:8px; border:1px solid #ddd;" />
+        <button onclick="sendMessage()" style="padding:12px 16px; border-radius:8px; border:none; background:#007bff; color:#fff; cursor:pointer;">Send</button>
+      </div>
+    </section>
+
+    <!-- ========== PLACE MODAL ========== -->
+    <div id="placeModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closePlaceModal()">✖</span>
+        <img id="modalImage" class="modal-img" alt="place image" onerror="this.style.display='none'" />
+        <h2 id="modalTitle"></h2>
+        <p id="modalDesc"></p>
+        <div id="modalDetails"></div>
+        <div id="modalMap" class="modal-map" style="height:250px; margin-top:12px;">
+          <p>Loading map...</p>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- end appWrapper -->
+
+  <!-- A-Frame for 3D views -->
+  <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+
+  <!-- Your main script (must exist) -->
+  <script src="script.js"></script>
+
+  <!-- Google Maps: REPLACE YOUR_GOOGLE_MAPS_API_KEY with the real key (must be visible in HTML) -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuTfIMyrUeSQr96B8t9zCTaoWSW5TcD_U&callback=initMap"
+    async defer onerror="document.getElementById('mapPageMap').innerHTML = '<p>Error loading Google Maps. Please check your API key.</p>';"></script>
+
+  <!-- Auto-show Home on load -->
+  <script>
+    // show home when page loads
+    window.addEventListener('load', () => {
+      // show appropriate page
+      try { showPage('homePage'); } catch (e) { 
+        // fallback: if showPage not yet defined, wait a moment
+        setTimeout(() => { try { showPage('homePage'); } catch(e){} }, 200);
+      }
+    });
+  </script>
+
+  <!-- Fix for missing images -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      document.querySelectorAll("img").forEach(img => {
+        img.src = "https://placehold.co/400x300?text=No+Image";
+      });
+    }, 300);
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #f4f6f9;
+}
+
+/* Fallback for missing images */
+img {
+    content: url("https://placehold.co/400x300?text=Image+Unavailable");
+}
+
+.hidden { display: none !important; }
+
+/* ===== HERO VIDEO FIX ===== */
+#hero {
+    position: relative;
+    height: 70vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+#bgVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* VIDEO ALWAYS BEHIND UI */
+}
+
+.hero-overlay {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* NAV BAR */
+.nav-bar {
+    margin-top: 10px;
+}
+.nav-bar button {
+    margin: 0 8px;
+    padding: 8px 14px;
+    border: none;
+    background: white;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* SEARCH BOX */
+#searchBox {
+    margin-top: 15px;
+    padding: 12px;
+    width: 60%;
+    max-width: 400px;
+    border-radius: 6px;
+    border: none;
+}
+
+/* ===== PAGES ===== */
+.page {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* PLACE CARDS */
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+.card h3 {
+    padding: 8px;
+    margin: 0;
+}
+.card p { 
+    padding: 0 10px 10px; 
+    margin: 0;
+}
+.card .category {
+    color: #007bff;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+/* NO IMAGE PLACEHOLDER */
+.card-no-image {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f0f0f0;
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* TABS */
+.tabs button {
+    background: #e8eef7;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.tabs .active { background: #007bff; color: white; }
+
+/* MAP */
+.map-box {
+    width: 90%;
+    height: 500px;
+    margin: auto;
+}
+.map-box p {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* 3D VIEW */
+.view3d-box {
+    width: 95%;
+    height: 600px;
+    margin: auto;
+    border-radius: 15px;
+    overflow: hidden;
+}
+.view3d-box p {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* CHATBOT */
+.chat-box {
+    width: 90%;
+    margin: auto;
+    background: white;
+    height: 450px;
+    overflow-y: scroll;
+    padding: 20px;
+    border-radius: 10px;
+}
+.chat-input {
+    width: 90%;
+    display: flex;
+    margin: 20px auto;
+}
+.chat-input input {
+    flex: 1;
+    padding: 12px;
+}
+.chat-input button {
+    padding: 12px;
+    margin-left: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
+.user {
+    text-align: right;
+    margin-bottom: 15px;
+}
+.user p {
+    background: #007bff;
+    color: white;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+.bot {
+    text-align: left;
+    margin-bottom: 15px;
+}
+.bot p {
+    background: #f1f1f1;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+}
+.modal.open { display: flex; justify-content: center; align-items: center; }
+.modal-content {
+    width: 80%;
+    max-height: 90%;
+    overflow-y: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+}
+.close-btn {
+    float: right;
+    cursor: pointer;
+    font-size: 24px;
+}
+.modal-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.modal-map {
+    width: 100%;
+    height: 250px;
+}
+.modal-map p {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
