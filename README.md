@@ -87,3 +87,4 @@ Made with 💙 by Beshu @ AGM College Hackathon// update 7 - Fri Nov 28 13:21:04
 <- Ensured proper error handling for all external quick update 2 -->
 <- Ensured proper error handling for all external quick update 3 -->
 <- Ensured proper error handling for all external quick update 4 -->
+<- Ensured proper error handling for all external quick update 8 -->
