@@ -469,4 +469,4 @@ function updateLastBotMessage(text) {
         lastMsg.innerHTML = `<p>${text}</p>`;
         box.scrollTop = box.scrollHeight;
     }
-}
+}// update 9 - Fri Nov 28 13:22:05 IST 2025
